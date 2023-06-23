@@ -3,6 +3,7 @@ package com.gihanz.servies.impl;
 import com.gihanz.dtos.ItemDTO;
 import com.gihanz.dtos.RssMainDTO;
 import com.gihanz.entities.Item;
+import com.gihanz.exceptions.CustomException;
 import com.gihanz.repositories.ItemRepository;
 import com.gihanz.servies.RSSService;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import utils.ConvertingXML;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +27,7 @@ public class RSSServiceImpl implements RSSService {
     private final RestTemplate restTemplate ;
     private final ItemRepository itemRepository;
 
-    @Value("rss.url")
+    @Value("${rss.url}")
     private String url;
 
     public RSSServiceImpl(RestTemplate restTemplate, ItemRepository itemRepository) {
@@ -36,7 +35,7 @@ public class RSSServiceImpl implements RSSService {
         this.itemRepository = itemRepository;
     }
 
-    @Scheduled(fixedDelay = 1 ,fixedDelay = 5 ,timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 1000, initialDelay = 300000)
     @Override
     public void rssContendUpdate() {
         try {
@@ -63,7 +62,7 @@ public class RSSServiceImpl implements RSSService {
             List<Item> itemList = itemRepository.getLastUpdatedOrSaveTenItem();
             return itemList.stream().map(Item::getDTO).collect(Collectors.toList());
         } catch (Exception e) {
-            return Collections.emptyList(); // we can create custom exceptions
+           throw new CustomException(e.getMessage());
         }
     }
 
@@ -74,7 +73,7 @@ public class RSSServiceImpl implements RSSService {
             Page<Item> itemList = itemRepository.findAll(pageable);
             return itemList.stream().map(Item::getDTO).collect(Collectors.toList());
         } catch (Exception e) {
-            return Collections.emptyList(); // we can create custom exceptions
+            throw new CustomException(e.getMessage());
         }
     }
 }
