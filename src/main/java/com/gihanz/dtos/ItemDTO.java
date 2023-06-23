@@ -9,15 +9,10 @@ import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 import utils.DateTimeUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor

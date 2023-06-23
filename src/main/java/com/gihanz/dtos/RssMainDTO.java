@@ -1,7 +1,6 @@
 package com.gihanz.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.ToString;
 
 import javax.xml.bind.annotation.*;
