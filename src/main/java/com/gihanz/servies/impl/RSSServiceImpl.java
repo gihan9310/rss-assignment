@@ -35,7 +35,7 @@ public class RSSServiceImpl implements RSSService {
         this.itemRepository = itemRepository;
     }
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 300000)
+    @Scheduled(fixedDelay = 300000, initialDelay =1000 )
     @Override
     public void rssContendUpdate() {
         try {
@@ -49,6 +49,7 @@ public class RSSServiceImpl implements RSSService {
                     //   Error
                 }
             });
+            // to keep my system health saved only last 10 items
             List<Item> sorted = list.stream().sorted(Comparator.comparing(Item::getPubDate).reversed()).limit(10).collect(Collectors.toList());
             itemRepository.saveAll(sorted);
         } catch (Exception e) {
